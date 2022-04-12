@@ -1,4 +1,7 @@
 /.gradle/
 /.idea/
 /build/
+/backend/build/
+/web/build/
+/shared/build/
 /kotlin-js-store/
