@@ -12,6 +12,8 @@ repositories {
 dependencies {
 	implementation(Deps.JetBrains.Compose.gradlePlugin)
 	implementation(Deps.JetBrains.Kotlin.gradlePlugin)
+	implementation(kotlin("serialization", version = Deps.JetBrains.Kotlin.VERSION))
+
 }
 
 kotlin {

@@ -1,18 +1,23 @@
 package net.malkowscy.application.plugins
 
-import io.ktor.server.routing.*
-import io.ktor.http.*
-import io.ktor.server.http.content.*
-import io.ktor.server.plugins.*
 import io.ktor.server.application.*
+import io.ktor.server.http.content.*
 import io.ktor.server.response.*
-import io.ktor.server.request.*
+import io.ktor.server.routing.*
+import net.malkowscy.model.Message
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun Application.configureRouting() {
 
 	routing {
 		get("/") {
-			call.respondText("Hello World!")
+			call.respondRedirect("/app/index.html")
+		}
+		get("/api/msg") {
+			val timestamp = SimpleDateFormat.getDateTimeInstance()
+				.format(Date())
+			call.respond(Message(timestamp, "Hello world from Ktor :-)"))
 		}
 		// Static plugin. Try to access `/static/index.html`
 		static("/static") {
@@ -21,17 +26,5 @@ fun Application.configureRouting() {
 		static("/app") {
 			resources("app")
 		}
-//		install(StatusPages) {
-//			exception<AuthenticationException> { call, cause ->
-//				call.respond(HttpStatusCode.Unauthorized)
-//			}
-//			exception<AuthorizationException> { call, cause ->
-//				call.respond(HttpStatusCode.Forbidden)
-//			}
-//
-//		}
 	}
 }
-
-class AuthenticationException : RuntimeException()
-class AuthorizationException : RuntimeException()

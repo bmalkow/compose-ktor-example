@@ -1,31 +1,67 @@
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import kotlinx.browser.window
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.await
+import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import net.malkowscy.model.Message
 import org.jetbrains.compose.web.css.*
-import org.jetbrains.compose.web.dom.*
+import org.jetbrains.compose.web.dom.Button
+import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.renderComposable
 
 fun main() {
-	var count: Int by mutableStateOf(0)
+	val mainScope = MainScope()
+	var message: Message? by mutableStateOf(null)
 
 	renderComposable(rootElementId = "root") {
 		Div({ style { padding(25.px) } }) {
-			Button(attrs = {
-				onClick { count -= 1 }
-			}) {
-				Text("-")
+
+			Div({
+					style {
+						padding(25.px)
+						backgroundColor(Color.aliceblue)
+					}
+				}) {
+
+				message?.let {
+					Div {
+						Text(it.text)
+					}
+					Div({
+							style {
+								fontSize(12.px)
+							}
+						}) {
+						Text(it.timestamp)
+					}
+				}
 			}
 
-			Span({ style { padding(15.px) } }) {
-				Text("$count")
-			}
 
 			Button(attrs = {
-				onClick { count += 1 }
+				onClick {
+					mainScope.launch {
+						message = fetchMessage()
+
+					}
+				}
 			}) {
-				Text("+")
+				Text("Call server")
 			}
+
 		}
 	}
 }
 
+suspend fun fetchMessage(): Message {
+	val response = window.fetch("http://0.0.0.0:8080/api/msg")
+		.await()
+		.text()
+		.await()
+	return Json.decodeFromString(response)
+}
