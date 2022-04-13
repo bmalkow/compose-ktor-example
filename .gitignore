@@ -4,4 +4,8 @@
 /backend/build/
 /web/build/
 /shared/build/
+/buildSrc/.gradle/
+/buildSrc/build/
+/buildSrc/buildSrc/.gradle/
+/buildSrc/buildSrc/build/
 /kotlin-js-store/
