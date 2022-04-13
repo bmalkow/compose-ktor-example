@@ -7,16 +7,6 @@ plugins {
 	application
 }
 
-group = "net.malkowscy"
-version = "1.0-SNAPSHOT"
-
-repositories {
-	jcenter()
-	mavenCentral()
-	google()
-	maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-	maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
-}
 
 application {
 	mainClass.set("net.malkowscy.application.ServerKt")
